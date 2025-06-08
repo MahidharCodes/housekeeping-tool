@@ -257,7 +257,7 @@
           // btn.onclick = () => generateSplitTablePDF(person, list).save(`${person}_Assignment.pdf`);
           btn.onclick = () => {
             const doc = generateSplitTablePDF(person, list);
-            doc.output('dataurlnewwindow', { filename: `${person}_Assignment.pdf` });
+            doc.save(`${person}_Assignment.pdf`);
           };
 
           section.appendChild(btn);
@@ -338,7 +338,8 @@
       });
 
       // doc.autoPrint();  // Optional: open print dialog automatically
-      doc.output('dataurlnewwindow');  // Opens in new window/tab (works in Safari)
+      // doc.output('dataurlnewwindow');  // Opens in new window/tab (works in Safari)
+      doc.save('All_Assignments.pdf'); // Uncomment to save as a single PDF file
     }
 
     function printAllPDFs_old() {
