@@ -196,17 +196,31 @@
 
     function splitAssignments(rooms, ratio1, ratio2, ratio3) {
       if (ratio1 < 0 || ratio2 < 0 || ratio3 < 0) {
-        return alert("Ratios cannot be negative. Please check the input values.");
+        alert("Ratios cannot be negative. Please check the input values.");
+        return [];
       }
+
       const totalRatio = ratio1 + ratio2 + ratio3;
       const totalRooms = rooms.length;
+
+      // Floor separation
+      const firstFloor = rooms.filter(r => r.room >= 100 && r.room < 200);
+      const secondFloor = rooms.filter(r => r.room >= 200 && r.room < 300);
+
       const count1 = Math.round(totalRooms * ratio1 / totalRatio);
       const count2 = Math.floor(totalRooms * ratio2 / totalRatio);
-      const count3 = totalRooms - count1 - count2; // ensures total adds up
-      let idx = 0;
-      const person1 = rooms.slice(idx, idx + count1); idx += count1;
-      const person2 = rooms.slice(idx, idx + count2); idx += count2;
-      const person3 = rooms.slice(idx);
+      const count3 = totalRooms - count1 - count2;
+
+      const assignedRooms = new Set();
+      const person2 = secondFloor.slice(0, count2);
+      person2.forEach(r => assignedRooms.add(r.room));
+
+      const remainingRooms = rooms.filter(r => !assignedRooms.has(r.room));
+
+      const person1 = remainingRooms.slice(0, count1);
+      person1.forEach(r => assignedRooms.add(r.room));
+
+      const person3 = rooms.filter(r => !assignedRooms.has(r.room));
 
       const result = [];
       if (ratio1 > 0) result.push([nameMap.person1, person1]);
@@ -298,7 +312,7 @@
         doc.setFontSize(22);
         doc.text(`Housekeeper: ${assignee}`, 14, 15);
         doc.text(`Date: ${dateStr}`, 150, 15);
-        doc.text(`Day: ${dayStr}`, 227  , 15);
+        doc.text(`Day: ${dayStr}`, 227, 15);
 
         doc.autoTable({
           head: [["#", "Room", "C/O", "S/O", "Notes"]],
