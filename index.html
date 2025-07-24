@@ -186,7 +186,7 @@
         const room = lines[i];
         const status = lines[i + 2];
         const stay = lines[i + 4];
-        if (/^\d{3}$/.test(room) && (status === "Occupied and Dirty" && (stay === "Occupied" || stay === "Pending Depart")) || (status === "Vacant and Dirty")) {
+        if (/^\d{3}$/.test(room) && (status === "Occupied and Dirty" && (stay === "Occupied" || stay === "Pending Depart")) || (status === "Available and Dirty")) {
           data.push({ room: parseInt(room), status, stay });
           i += 4;
         }
