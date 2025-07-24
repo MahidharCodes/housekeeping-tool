@@ -305,7 +305,7 @@
         const mapRows = (data, offset) => data.map((r, idx) => [
           offset + idx,
           r.room,
-          r.stay === 'Pending Depart' ? 'C' : '',
+          (r.stay === 'Pending Depart' || r.status === 'Available and Dirty') ? 'C' : '',
           r.stay === 'Occupied' ? 'S' : '',
           ''
         ]);
