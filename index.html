@@ -186,9 +186,10 @@
         const room = lines[i];
         const status = lines[i + 2];
         const stay = lines[i + 4];
-        if (/^\d{3}$/.test(room) && (status === "Occupied and Dirty" && (stay === "Occupied" || stay === "Pending Depart")) || (status === "Available and Dirty")) {
+        const isValidRoom = /^\d{3}$/.test(room);
+        const isDirty = status.includes("Dirty");
+        if (isValidRoom && isDirty) {
           data.push({ room: parseInt(room), status, stay });
-          i += 4;
         }
       }
       return data.sort((a, b) => a.room - b.room);
@@ -259,7 +260,7 @@
           table.innerHTML = '<tr><th>S.No</th><th>Room</th><th>C/O</th><th>S/O</th><th>Notes</th></tr>';
 
           list.forEach((r, i) => {
-            const co = r.stay === 'Pending Depart' ? 'C' : '';
+            const co = (r.stay === 'Pending Depart' || r.status === 'Available and Dirty') ? 'C' : '';
             const so = r.stay === 'Occupied' ? 'S' : '';
             const tr = document.createElement("tr");
             tr.innerHTML = `<td>${i + 1}</td><td>${r.room}</td><td>${co}</td><td>${so}</td><td></td>`;
